@@ -114,6 +114,8 @@ public class Graphs {
         return true;
     }
 
+    // numbers of Island by BFS method
+
     public void bfsFill(char[][] grid, int row, int col, boolean[][] visited) {
         int dr[] = {1, 0, -1, 0};
         int dc[] = {0, -1, 0, 1};
@@ -138,6 +140,8 @@ public class Graphs {
         }
     }
 
+    // numbers of Island by DFS method
+
     private void dfsFill(char[][] grid,int i, int j){
         if(i>=0 && j>=0 && i<grid.length && j<grid[0].length && grid[i][j]=='1'){
             grid[i][j]='0';
@@ -148,6 +152,7 @@ public class Graphs {
         }
     }
     
+    // numbers of Island main method
     public int numIslands(char[][] grid) {
         int m = grid.length; // row
         int n = grid[0].length;  // coloum
@@ -170,6 +175,8 @@ public class Graphs {
         return count;
     }
 
+    // numbers of province
+
     private void dfs(int[][] isConnected, int currVer, boolean[] visited) {
         visited[currVer] = true;
         for(int i = 0 ; i < isConnected.length; i++) {
@@ -191,6 +198,8 @@ public class Graphs {
         return count;
     }
 
+    // Flood Fill
+
     private void dfs(int[][] image, int[][]ans, int row, int col, int color, int intialColor, 
     int[] delRow, int[] delCol) {
         ans[row][col] = color;
@@ -205,6 +214,7 @@ public class Graphs {
             }
         }
     }
+    
 
     public int[][] floodFill(int[][] image, int sr, int sc, int color) {
         int[][] ans = image;
@@ -215,6 +225,53 @@ public class Graphs {
         return ans;
     }
 
+    // Rotting Oranges
+
+    public int orangesRotting(int[][] grid) {
+        int n = grid.length;
+        int m = grid[0].length;
+        Queue<Pair> q = new LinkedList<>();
+        int[][] visited = new int[n][m];
+        int countFresh = 0;
+        for(int row = 0; row < n; row++) {
+            for(int col = 0; col < m; col++) {
+                if(grid[row][col] == 2) {
+                    visited[row][col] = 2;
+                    q.add(new Pair(row, col, 0));
+                }
+                if(grid[row][col] == 1) {
+                    countFresh++;
+                }
+            }
+        }
+        int[] delRow = {-1,0,+1,0};
+        int[] delCol = {0,+1,0,-1};
+        int tm  = 0;
+        int count = 0;
+        while(!q.isEmpty()) {
+            int r = q.peek().row;
+            int c = q.peek().col;
+            int t = q.peek().tm;
+            tm = Math.max(tm, t);
+            q.remove();
+
+            for(int i = 0; i < 4; i++) {
+                int ro = delRow[i] + r;
+                int cl = delCol[i] + c;
+                if (ro >= 0 && ro < n && cl >= 0 && cl < m &&
+                visited[ro][cl] == 0 && grid[ro][cl] == 1) {
+                    q.add(new Pair(ro, cl, tm + 1));
+                    visited[ro][cl] = 2;
+                    count++;
+                }
+            }
+        }
+        if (count != countFresh) return -1;
+        return tm;
+    }
+
+    // Print Adjacency Matrix
+
     public static void printAdjMatrix(int adjMatrix[][]) {
         for(int i = 0; i < adjMatrix.length ; i++) {
             for(int j = 0; j < adjMatrix.length; j++) {
@@ -223,6 +280,8 @@ public class Graphs {
             System.out.println();
         }
     }
+
+    // Main method
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         int n = sc.nextInt();
