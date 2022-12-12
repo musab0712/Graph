@@ -170,6 +170,51 @@ public class Graphs {
         return count;
     }
 
+    private void dfs(int[][] isConnected, int currVer, boolean[] visited) {
+        visited[currVer] = true;
+        for(int i = 0 ; i < isConnected.length; i++) {
+            if(isConnected[currVer][i] == 1 && !visited[i]) {
+                dfs(isConnected, i, visited);
+            }
+        }
+    }
+
+    public int findNumOfProvince(int[][] isConnected) {
+        boolean visited[] = new boolean[isConnected.length];
+        int count = 0;
+        for(int i = 0 ; i < isConnected.length; i++) {
+            if(!visited[i]) {
+                count++;
+                dfs(isConnected, i, visited);
+            }
+        }
+        return count;
+    }
+
+    private void dfs(int[][] image, int[][]ans, int row, int col, int color, int intialColor, 
+    int[] delRow, int[] delCol) {
+        ans[row][col] = color;
+        int n = image.length;
+        int m = image[0].length;
+        for(int i = 0; i < 4; i++) {
+            int adjRow = row + delRow[i];
+            int adjCol = col +delCol[i];
+            if(adjRow >= 0 && adjRow < n && adjCol >= 0 && adjCol < m && 
+            image[adjRow][adjCol] == intialColor && ans[adjRow][adjCol] != color) {
+                dfs(image, ans, adjRow, adjCol, color, intialColor, delRow, delCol);
+            }
+        }
+    }
+
+    public int[][] floodFill(int[][] image, int sr, int sc, int color) {
+        int[][] ans = image;
+        int intialColor = image[sr][sc];
+        int[] delRow = {-1, 0, +1, 0};
+        int[] delCol = {0, +1, 0, -1};
+        dfs(image, ans, sr, sc, color, intialColor, delRow, delCol);
+        return ans;
+    }
+
     public static void printAdjMatrix(int adjMatrix[][]) {
         for(int i = 0; i < adjMatrix.length ; i++) {
             for(int j = 0; j < adjMatrix.length; j++) {
